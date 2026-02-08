@@ -1,4 +1,6 @@
 from PIL import Image
+from .resize import resize_image_with_resampling
+
 
 def resize_image_to_fixed_grid(
     image: Image.Image,
@@ -18,7 +20,10 @@ def resize_image_to_fixed_grid(
     if grid_width <= 0 or grid_height <= 0:
         raise ValueError("Grid dimensions must be positive integers.")
     
-    grid_image = image.resize(
-        size=(grid_width, grid_height), resample=Image.Resampling.NEAREST
+    grid_image = resize_image_with_resampling(
+        image=image,
+        width=grid_width,
+        height=grid_height,
+        resampling_filter=Image.Resampling.NEAREST,
     )
     return grid_image

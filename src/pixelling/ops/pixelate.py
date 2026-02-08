@@ -1,4 +1,6 @@
 from PIL import Image
+from .resize import resize_image_with_resampling
+
 
 def pixelate_image_with_block_size(image: Image.Image, block_size: int) -> Image.Image:
     """Return a pixelated copy of the image using a fixed block size.
@@ -18,8 +20,19 @@ def pixelate_image_with_block_size(image: Image.Image, block_size: int) -> Image
     
     pixelate_width = width // block_size
     pixelate_height = height // block_size
-    pixelate_image = image.resize(size = (pixelate_width, pixelate_height), resample = Image.Resampling.NEAREST)
-    upscaled_image = pixelate_image.resize(size = (width, height), resample = Image.Resampling.NEAREST)
+
+    pixelate_image = resize_image_with_resampling(
+        image=image,
+        width=pixelate_width,
+        height=pixelate_height,
+        resampling_filter=Image.Resampling.NEAREST,
+    )
+    
+    upscaled_image = resize_image_with_resampling(
+        image=pixelate_image,
+        width=width,
+        height=height,
+        resampling_filter=Image.Resampling.NEAREST,
+    )
 
     return upscaled_image
-

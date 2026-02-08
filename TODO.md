@@ -10,7 +10,7 @@
 - [x] Implement block-size pixelation operation
 - [x] Implement grid-based resize operation (fixed width/height)
 - [x] Implement optional color quantization
-- [ ] Centralize resize helpers and resampling choices
+- [x] Centralize resize helpers and resampling choices
 
 ## CLI
 - [ ] Define CLI command structure (pixelate vs grid)
