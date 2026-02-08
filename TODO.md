@@ -9,8 +9,7 @@
 ## Core image operations
 - [x] Implement block-size pixelation operation
 - [x] Implement grid-based resize operation (fixed width/height)
-- [ ] Implement optional color quantization
-- [ ] Implement optional dithering control
+- [x] Implement optional color quantization
 - [ ] Centralize resize helpers and resampling choices
 
 ## CLI

@@ -20,7 +20,11 @@ def resize_image_with_resampling(
     Returns:
         A new image resized with the requested resampling filter.
     """
-    raise NotImplementedError("Resize helper has not been implemented yet.")
+    if width <= 0 or height <= 0:
+        raise ValueError("Width and height must be positive integers.")
+    
+    resized_image = image.resize( (width, height), resample=resampling_filter)
+    return resized_image
 
 
 def select_resampling_filter(resampling_name: str) -> Image.Resampling:
@@ -32,4 +36,18 @@ def select_resampling_filter(resampling_name: str) -> Image.Resampling:
     Returns:
         The Pillow resampling enum value for the provided name.
     """
-    raise NotImplementedError("Resampling selection has not been implemented yet.")
+    resampling_names = {
+        "nearest": Image.Resampling.NEAREST,
+        "bilinear": Image.Resampling.BILINEAR,
+        "bicubic": Image.Resampling.BICUBIC,
+        "lanczos": Image.Resampling.LANCZOS,
+    }
+
+    normalized_resampling_name = resampling_name.strip().lower()
+    if normalized_resampling_name not in resampling_names:
+        raise ValueError(
+            f"Invalid resampling filter name: '{resampling_name}'. "
+            f"Valid options are: {', '.join(resampling_names.keys())}."
+        )
+    
+    return resampling_names[normalized_resampling_name]
