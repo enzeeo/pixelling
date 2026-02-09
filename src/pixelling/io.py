@@ -10,6 +10,8 @@ def load_image_from_path(input_image_path: str) -> Image.Image:
     Returns:
         Loaded Pillow image.
     """
+    # GIF refactor point:
+    # This currently returns one image copy. Animated GIF support should load all frames.
     with Image.open(input_image_path) as image:
         return image.copy()
 
@@ -26,6 +28,8 @@ def save_image_to_path(
         output_image_path: Destination image file path.
         allow_overwrite: Whether an existing file may be overwritten.
     """
+    # GIF refactor point:
+    # This currently saves one image object. Animated GIF support should save frame sequences.
     if not allow_overwrite:
         i = 1
         base, extension = os.path.splitext(output_image_path)
