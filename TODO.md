@@ -13,21 +13,21 @@
 - [x] Centralize resize helpers and resampling choices
 
 ## CLI
-- [ ] Define CLI command structure (pixelate vs grid)
-- [ ] Implement argument parsing and validation
-- [ ] Map CLI options to internal config objects
-- [ ] Implement output path handling and overwrite rules
-- [ ] Add helpful error messages and --help text
+- [x] Define CLI command structure (pixelate vs grid)
+- [x] Implement argument parsing and validation
+- [x] Map CLI options to internal config objects
+- [x] Implement output path handling and overwrite rules
+- [x] Add helpful error messages and --help text
 
 ## Pipeline
-- [ ] Define transformation pipeline (load → transform → save)
+- [x] Define transformation pipeline (load → transform → save)
 - [ ] Ensure pipeline is deterministic and side-effect free
-- [ ] Support RGB and RGBA images cleanly
+- [x] Support RGB and RGBA images cleanly
 
 ## Testing
-- [ ] Add unit tests for pixelation output dimensions
-- [ ] Add unit tests for grid resizing correctness
-- [ ] Add CLI argument parsing tests
+- [x] Add unit tests for pixelation output dimensions
+- [x] Add unit tests for grid resizing correctness
+- [x] Add CLI argument parsing tests
 - [ ] Add small test images to test/assets
 
 ## Documentation
