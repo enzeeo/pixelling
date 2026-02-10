@@ -1,12 +1,17 @@
 from argparse import ArgumentParser, Namespace, RawTextHelpFormatter
 from typing import Sequence
-from PIL import Image
+
 from .ops.pipeline import run_image_transformation_pipeline
-from .io import load_image_from_path, save_image_to_path, build_default_output_image_path
+from .io import (
+    build_default_output_image_path,
+    load_image_from_path,
+    save_animated_image_to_path,
+    save_image_to_path,
+)
+from .gif_io import is_animated_gif_file, load_animated_gif_frames_from_path
+from .ops.animated_pipeline import run_animated_image_transformation_pipeline
 
-import os
 import sys
-
 
 def create_command_line_argument_parser() -> ArgumentParser:
     """Create and return the command-line argument parser for pixelling.
@@ -136,33 +141,48 @@ def run_command_line_interface(
     parsed_arguments = parse_command_line_arguments(command_line_arguments)
     validate_command_line_arguments(parsed_arguments)
 
-    # GIF refactor point:
-    # Branch here between single-image loading and animated GIF frame loading.
-    image = load_image_from_path(parsed_arguments.input_image_path)
-
-    # GIF refactor point:
-    # Route animated frame sequences through an animated pipeline wrapper.
-    output_image = run_image_transformation_pipeline(
-                              image=image,
-                              transformation_mode=parsed_arguments.mode,
-                              block_size=parsed_arguments.block_size,
-                              grid_width=parsed_arguments.grid_width,
-                              grid_height=parsed_arguments.grid_height,
-                              color_count=parsed_arguments.color_count,
-                          )
-    
     if parsed_arguments.output_image_path is None:
-        parsed_arguments.output_image_path = build_default_output_image_path(parsed_arguments.input_image_path)
+        parsed_arguments.output_image_path = build_default_output_image_path(
+            parsed_arguments.input_image_path
+        )
 
-    # GIF refactor point:
-    # Use GIF frame saving when output is animated, otherwise keep single-image saving.
-    save_image_to_path(
-        image=output_image,
-        output_image_path=parsed_arguments.output_image_path,
-        allow_overwrite=parsed_arguments.overwrite,
-    )
+    if is_animated_gif_file(parsed_arguments.input_image_path):
+        frames, metadata = load_animated_gif_frames_from_path(parsed_arguments.input_image_path)
+        transformed_frames = run_animated_image_transformation_pipeline(
+            frames=frames,
+            transformation_mode=parsed_arguments.mode,
+            block_size=parsed_arguments.block_size,
+            grid_width=parsed_arguments.grid_width,
+            grid_height=parsed_arguments.grid_height,
+            color_count=parsed_arguments.color_count,
+        )
+        save_animated_image_to_path(
+            frames=transformed_frames,
+            output_image_path=parsed_arguments.output_image_path,
+            allow_overwrite=parsed_arguments.overwrite,
+            metadata=metadata,
+        )
+        return 0
+    
+    else: 
+        image = load_image_from_path(parsed_arguments.input_image_path)
 
-    return 0
+        output_image = run_image_transformation_pipeline(
+                                  image=image,
+                                  transformation_mode=parsed_arguments.mode,
+                                  block_size=parsed_arguments.block_size,
+                                  grid_width=parsed_arguments.grid_width,
+                                  grid_height=parsed_arguments.grid_height,
+                                  color_count=parsed_arguments.color_count,
+                              )
+
+        save_image_to_path(
+            image=output_image,
+            output_image_path=parsed_arguments.output_image_path,
+            allow_overwrite=parsed_arguments.overwrite,
+        )
+
+        return 0
     
 
 def main() -> None:

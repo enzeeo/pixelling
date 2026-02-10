@@ -1,7 +1,6 @@
-"""Pipeline helpers for animated image processing."""
-
 from PIL import Image
 
+from .pipeline import run_image_transformation_pipeline
 
 def run_animated_image_transformation_pipeline(
     frames: list[Image.Image],
@@ -24,4 +23,18 @@ def run_animated_image_transformation_pipeline(
     Returns:
         Transformed frame sequence in the same order as the input frames.
     """
-    raise NotImplementedError("Animated transformation pipeline is not implemented yet.")
+    if len(frames) == 0:
+        raise ValueError("At least one frame is required for animated processing.")
+
+    transformed_frames: list[Image.Image] = []
+    for frame in frames:
+        transformed_frame = run_image_transformation_pipeline(
+            image=frame,
+            transformation_mode=transformation_mode,
+            block_size=block_size,
+            grid_width=grid_width,
+            grid_height=grid_height,
+            color_count=color_count,
+        )
+        transformed_frames.append(transformed_frame)
+    return transformed_frames
