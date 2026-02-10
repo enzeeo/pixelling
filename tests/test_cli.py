@@ -1,13 +1,20 @@
 import sys
 import unittest
 from pathlib import Path
+from unittest.mock import patch
+
+from PIL import Image
 
 PROJECT_ROOT_DIRECTORY = Path(__file__).resolve().parents[1]
 SOURCE_DIRECTORY = PROJECT_ROOT_DIRECTORY / "src"
 if str(SOURCE_DIRECTORY) not in sys.path:
     sys.path.insert(0, str(SOURCE_DIRECTORY))
 
-from pixelling.cli import parse_command_line_arguments, validate_command_line_arguments
+from pixelling.cli import (
+    parse_command_line_arguments,
+    run_command_line_interface,
+    validate_command_line_arguments,
+)
 
 
 class CommandLineArgumentTests(unittest.TestCase):
@@ -82,6 +89,47 @@ class CommandLineArgumentTests(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             validate_command_line_arguments(parsed_arguments)
+
+    def test_run_command_line_interface_routes_animated_input_through_animated_pipeline(self) -> None:
+        first_frame = Image.new("RGBA", (8, 8), color=(10, 20, 30, 255))
+        second_frame = Image.new("RGBA", (8, 8), color=(30, 20, 10, 255))
+        transformed_frames = [
+            Image.new("RGBA", (8, 8), color=(100, 110, 120, 255)),
+            Image.new("RGBA", (8, 8), color=(120, 110, 100, 255)),
+        ]
+        metadata = {"loop": 1, "duration": 30}
+
+        with patch("pixelling.cli.is_animated_gif_file", return_value=True), patch(
+            "pixelling.cli.load_animated_gif_frames_from_path",
+            return_value=([first_frame, second_frame], metadata),
+        ), patch(
+            "pixelling.cli.run_animated_image_transformation_pipeline",
+            return_value=transformed_frames,
+        ) as animated_pipeline_mock, patch(
+            "pixelling.cli.save_animated_image_to_path"
+        ) as save_animated_image_mock, patch(
+            "pixelling.cli.save_image_to_path"
+        ) as save_single_image_mock:
+            exit_status = run_command_line_interface(
+                ["input.gif", "--mode", "pixel", "--block-size", "4"]
+            )
+
+        self.assertEqual(exit_status, 0)
+        animated_pipeline_mock.assert_called_once_with(
+            frames=[first_frame, second_frame],
+            transformation_mode="pixel",
+            block_size=4,
+            grid_width=None,
+            grid_height=None,
+            color_count=None,
+        )
+        save_animated_image_mock.assert_called_once_with(
+            frames=transformed_frames,
+            output_image_path="input_pixelling.gif",
+            allow_overwrite=False,
+            metadata=metadata,
+        )
+        save_single_image_mock.assert_not_called()
 
 
 if __name__ == "__main__":

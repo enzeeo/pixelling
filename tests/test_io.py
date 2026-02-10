@@ -11,8 +11,10 @@ if str(SOURCE_DIRECTORY) not in sys.path:
     sys.path.insert(0, str(SOURCE_DIRECTORY))
 
 from pixelling.io import (
+    build_available_output_image_path,
     build_default_output_image_path,
     load_image_from_path,
+    save_animated_image_to_path,
     save_image_to_path,
 )
 
@@ -51,6 +53,38 @@ class InputOutputOperationTests(unittest.TestCase):
             )
 
             numbered_output_image_path = Path(temporary_directory_path) / "result_1.png"
+            self.assertTrue(numbered_output_image_path.exists())
+
+    def test_build_available_output_image_path_returns_numbered_path_when_needed(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory_path:
+            first_output_image_path = Path(temporary_directory_path) / "result.png"
+            Image.new("RGB", (5, 5), color=(0, 0, 0)).save(first_output_image_path)
+
+            available_output_image_path = build_available_output_image_path(
+                output_image_path=str(first_output_image_path),
+                allow_overwrite=False,
+            )
+
+            self.assertEqual(
+                available_output_image_path,
+                str(Path(temporary_directory_path) / "result_1.png"),
+            )
+
+    def test_save_animated_image_to_path_creates_numbered_file_when_overwrite_is_disabled(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory_path:
+            output_image_path = Path(temporary_directory_path) / "result.gif"
+            Image.new("RGBA", (5, 5), color=(0, 0, 0, 255)).save(output_image_path)
+
+            first_frame = Image.new("RGBA", (5, 5), color=(255, 255, 255, 255))
+            second_frame = Image.new("RGBA", (5, 5), color=(255, 0, 0, 255))
+            save_animated_image_to_path(
+                frames=[first_frame, second_frame],
+                output_image_path=str(output_image_path),
+                allow_overwrite=False,
+                metadata={"duration": 40, "loop": 0},
+            )
+
+            numbered_output_image_path = Path(temporary_directory_path) / "result_1.gif"
             self.assertTrue(numbered_output_image_path.exists())
 
 
