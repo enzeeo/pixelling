@@ -17,12 +17,9 @@ File saving:
 
 ## Examples 
 
-<p align="center">
-  <img src="content/rain.jpg" alt="Original image" width="320" />
-  <img src="content/rain_pixelling.jpg" alt="Pixelated image" width="320" />
-</p>
-<p align="center"><em>Left: original | Right: pixelated</em></p>
+| Original |  | Pixelated |
+|---|---|---|
+| <img src="contents/original.png" alt="Original image" width="320" /> |  | <img src="contents/pixelated.png" alt="Pixelated image" width="320" /> |
 
 - Running the pixel mode with a block size of 10
-
 - `pixelling content/rain.jpg --mode pixel --block-size 10`
