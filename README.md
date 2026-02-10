@@ -70,11 +70,11 @@ File saving:
 <table align="center">
   <tr>
     <td align="center">
-      <img src="content/bee.gif" alt="Original bee gif" width="320" />
+      <img src="content/bee_preview.gif" alt="Original bee gif" width="320" />
     </td>
     <td style="width:32px;"></td>
     <td align="center">
-      <img src="content/bee_pixelling.gif" alt="Pixelated bee gif" width="320" />
+      <img src="content/bee_pixelling_preview.gif" alt="Pixelated bee gif" width="320" />
     </td>
   </tr>
   <tr>
