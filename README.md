@@ -42,6 +42,9 @@ File saving:
   </tr>
 </table>
 
+<br />
+<br />
+
 <table align="center">
   <tr>
     <td align="center">
@@ -66,6 +69,9 @@ File saving:
     </td>
   </tr>
 </table>
+
+<br />
+<br />
 
 <table align="center">
   <tr>
