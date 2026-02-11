@@ -9,6 +9,8 @@
 ## Core image operations
 - [x] Implement block-size pixelation operation
 - [x] Implement grid-based resize operation (fixed width/height)
+- [x] Improve grid quality with center-crop aspect ratio matching
+- [x] Improve grid quality with box-filter downscaling
 - [x] Implement optional color quantization
 - [x] Centralize resize helpers and resampling choices
 

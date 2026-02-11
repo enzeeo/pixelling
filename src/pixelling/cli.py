@@ -23,7 +23,7 @@ def create_command_line_argument_parser() -> ArgumentParser:
         prog="pixelling",
         description=(
             "Convert images into pixel-style outputs.\n"
-            "Use pixel mode to keep original size, or grid mode to resize to a fixed grid."
+            "Use pixel mode to keep original size, or grid mode to create a fixed grid."
         ),
         epilog=(
             "Examples:\n"
@@ -61,7 +61,7 @@ def create_command_line_argument_parser() -> ArgumentParser:
         help=(
             "Transformation mode.\n"
             "'pixel' keeps original image size.\n"
-            "'grid' resizes to fixed width and height."
+            "'grid' center-crops to target aspect ratio, then resizes to fixed width and height."
         ),
     )
     argument_parser.add_argument(

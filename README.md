@@ -5,7 +5,7 @@ into pixel-art style outputs using either pixelation or fixed-grid resizing.
 ## Features
 Two modes:
 - `pixel` mode keeps the original image size but makes it look blocky.
-- `grid` mode resizes the image to a small fixed size like 32x32.
+- `grid` mode center-crops to the target aspect ratio, then downsamples to a small fixed size like 32x32.
 
 Optional color reduction with `--color-count` to create a limited-palette look.
 
@@ -93,6 +93,9 @@ File saving:
       <ul>
         <li>Running pixel mode on an animated GIF with a block size of 8</li>
         <li><code>pixelling content/bee.gif --mode pixel --block-size 8</code></li>
+        <li>NOTE: This is a compressed version to run smoothly on the Github repo. 
+            The real version is inside the <code>content</code> folder under <code>bee.gif</code> 
+            and <code>bee_pixelling.gif</code></li>
       </ul>
     </td>
   </tr>
