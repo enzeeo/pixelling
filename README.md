@@ -289,3 +289,7 @@ For feature suggestions, please open a GitHub Issue using the template that incl
 - The problem you want to solve.
 - The behavior you expect.
 - An example command you would like to run.
+
+
+## License 
+This project is licensed under the MIT License. See the `LICENSE`file for details.
