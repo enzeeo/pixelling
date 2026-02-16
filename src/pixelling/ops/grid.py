@@ -45,7 +45,7 @@ def resize_image_to_fixed_grid(
 ) -> Image.Image:
     """Return an image resized to a fixed grid width and height.
 
-    The operation uses a center-crop to match the target aspect ratio, then
+    The operation center-crops to match the target aspect ratio, then
     downsamples with a box filter for cleaner low-resolution pixel-art output.
 
     Args:
