@@ -29,8 +29,6 @@ def run_image_transformation_pipeline(
     Returns:
         A transformed image after applying the selected operations.
     """
-    # GIF refactor point:
-    # This function transforms one frame. Animated GIF support should call this per frame.
     if transformation_mode == "pixel":
         if block_size is None:
             raise ValueError("Block size must be provided for pixel mode.")
